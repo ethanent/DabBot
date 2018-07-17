@@ -47,6 +47,7 @@ client.on('message', async (message) => {
 				await message.channel.send(createRichEmbed('DabBot Information', 'I\'m DabBot, an [ethanent](https://ethanent.me) project.\n\nTo get DabBot on your server, click [here](https://discordapp.com/api/oauth2/authorize?client_id=468617622867410944&permissions=8&redirect_uri=https%3A%2F%2Fethanent.me&scope=bot).\nGiHub repository: [ethanent/DabBot](https://github.com/ethanent/DabBot)\nTwitter: [@ethanent](https://twitter.com/ethanent)'))
 				break
 			case 'leaderboards':
+			case 'leaderboard':
 			case 'dabbers':
 			case 'leaders':
 			case 'boards':
