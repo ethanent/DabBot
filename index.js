@@ -24,7 +24,7 @@ const updateDabboards = async () => {
 	for (let i = 0; i < 5; i++) {
 		if (!leaderMems[i]) break
 
-		boardContent = boardContent + (i + 1) + '. ' + (await client.fetchUser(leaderMems[i].id)) + '\n'
+		boardContent = boardContent + (i + 1) + '. ' + (await client.fetchUser(leaderMems[i].id)) + ' - ' + leaderMems[i].dabs + ' dabs\n'
 	}
 
 	dabboards.forEach(async (board) => {
