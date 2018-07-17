@@ -100,6 +100,12 @@ client.on('message', async (message) => {
 	}
 
 	if (dabbed) {
+		if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
+			await message.channel.send(createRichEmbed('Dab Error', 'I need the **Administrator** permission to qualify dabs!', null, true))
+
+			return
+		}
+
 		recentDabs.push(message.member)
 
 		let sentM = await message.channel.send(createRichEmbed('Savage Dab', 'Congratulations, you\'ve just dabbed!'))
