@@ -7,32 +7,11 @@ const memberData = require(path.join(__dirname, 'lib', 'memberData.js'))
 
 const client = new Discord.Client()
 
-let dabboards = []
 let recentDabs = []
 
 setInterval(() => {
 	recentDabs = []
 }, 3 * 60 * 1000)
-
-const updateDabboards = async () => {
-	let leaderMems = await memberData.getAllMembers()
-
-	leaderMems = leaderMems.sort((a, b) => a.dabs > b.dabs ? -1 : 1)
-
-	let boardContent = ''
-
-	for (let i = 0; i < 5; i++) {
-		if (!leaderMems[i]) break
-
-		boardContent = boardContent + (i + 1) + '. ' + (await client.fetchUser(leaderMems[i].id)) + ' - ' + leaderMems[i].dabs + ' dabs\n'
-	}
-
-	dabboards.forEach(async (board) => {
-		(await board.fetchMessages()).forEach(async (message) => await message.delete())
-
-		await board.send(createRichEmbed('-=-=- Dab Leaderboards -=-=-', boardContent, 'Leaderboards update every 5 minutes'))
-	})
-}
 
 client.on('ready', async () => {
 	await client.user.setPresence({
@@ -42,16 +21,6 @@ client.on('ready', async () => {
 		},
 		'status': 'online'
 	})
-
-	client.guilds.forEach((guild) => {
-		if (guild.channels.exists('name', 'dab-leaderboard')) {
-			dabboards.push(guild.channels.find('name', 'dab-leaderboard'))
-		}
-	})
-
-	await updateDabboards()
-
-	setInterval(updateDabboards, 5 * 60 * 1000)
 
 	console.log('Started completely.')
 })
@@ -66,6 +35,8 @@ client.on('message', async (message) => {
 		const segments = message.content.substring(1).split(' ')
 		const command = segments[0]
 
+		console.log(command + ' command by ' + message.author.username)
+
 		const senderData = await memberData.getMember(message.member.id)
 
 		switch (command) {
@@ -74,6 +45,24 @@ client.on('message', async (message) => {
 				break
 			case 'info':
 				await message.channel.send(createRichEmbed('DabBot Information', 'I\'m DabBot, an [ethanent](https://ethanent.me) project.\n\nTo get DabBot on your server, click [here](https://discordapp.com/api/oauth2/authorize?client_id=468617622867410944&permissions=8&redirect_uri=https%3A%2F%2Fethanent.me&scope=bot).\nGiHub repository: [ethanent/DabBot](https://github.com/ethanent/DabBot)\nTwitter: [@ethanent](https://twitter.com/ethanent)'))
+				break
+			case 'leaderboards':
+			case 'dabbers':
+			case 'leaders':
+			case 'boards':
+				let leaderMems = await memberData.getAllMembers()
+
+				leaderMems = leaderMems.sort((a, b) => a.dabs > b.dabs ? -1 : 1)
+
+				let boardContent = ''
+
+				for (let i = 0; i < 5; i++) {
+					if (!leaderMems[i]) break
+
+					boardContent = boardContent + (i + 1) + '. ' + (await client.fetchUser(leaderMems[i].id)) + ' - ' + leaderMems[i].dabs + ' dabs\n'
+				}
+
+				await message.channel.send(createRichEmbed('-=-=- Dab Leaderboards -=-=-', boardContent))
 				break
 		}
 	}
