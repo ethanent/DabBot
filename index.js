@@ -72,6 +72,9 @@ client.on('message', async (message) => {
 			case 'dabs':
 				await message.channel.send(createRichEmbed('Dab Score', 'You\'ve dabbed **' + senderData.dabs + '** time' + (senderData.dabs !== 1 ? 's' : '') + '.'))
 				break
+			case 'info':
+				await message.channel.send(createRichEmbed('DabBot Information', 'I\'m DabBot, an [ethanent](https://ethanent.me) project.\n\nTo get DabBot on your server, click [here](https://discordapp.com/api/oauth2/authorize?client_id=468617622867410944&permissions=8&redirect_uri=https%3A%2F%2Fethanent.me&scope=bot).\nGiHub repository: [ethanent/DabBot](https://github.com/ethanent/DabBot)\nTwitter: [@ethanent](https://twitter.com/ethanent)'))
+				break
 		}
 	}
 })
