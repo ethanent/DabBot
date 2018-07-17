@@ -89,7 +89,7 @@ client.on('message', async (message) => {
 
 	const senderData = await memberData.getMember(message.member.id)
 
-	const serverDabEmoji = message.guild.emojis.array().filter((emoji) => emoji.name.includes('dab'))
+	const serverDabEmoji = message.guild.emojis.array().filter((emoji) => emoji.name.toLowerCase().includes('dab'))
 
 	let dabbed = false
 
