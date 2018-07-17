@@ -1,5 +1,7 @@
 const path = require('path')
+const ofs = require('fs')
 const Discord = require('discord.js')
+const poky = require('poky')
 const createRichEmbed = require(path.join(__dirname, 'lib', 'createRichEmbed.js'))
 const memberData = require(path.join(__dirname, 'lib', 'memberData.js'))
 
@@ -97,11 +99,15 @@ client.on('message', async (message) => {
 	if (dabbed) {
 		recentDabs.push(message.member)
 
-		await message.channel.send(createRichEmbed('Savage Dab', 'Congratulations, you\'ve just dabbed!'))
+		let sentM = await message.channel.send(createRichEmbed('Savage Dab', 'Congratulations, you\'ve just dabbed!'))
 
 		senderData.dabs++
 
 		await memberData.setMember(message.member.id, senderData)
+
+		await poky(2000)
+
+		await sentM.delete()
 	}
 })
 

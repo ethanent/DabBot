@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ethanent/DabBot#readme",
   "dependencies": {
-    "discord.js": "^11.3.2"
+    "discord.js": "^11.3.2",
+    "poky": "^1.0.1"
   }
 }
