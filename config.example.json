@@ -1,0 +1,9 @@
+{
+	"token": "mytok",
+	"dabMessages": [
+		{"count": 1, "title": "Savage Dab", "description": "Congratulations, you've just dabbed!"},
+		{"count": 2, "title": "Dual-dab", "description": "Congratulations, you've just dabbed dually!"},
+		{"count": 3, "title": "Tri-dab", "description": "Congratulations, you've performed the tri-dab!"},
+		{"count": 4, "title": "Quad-dab", "description": "Congratulations, you've just hit a legendary quad-dab!"}
+	]
+}

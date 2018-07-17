@@ -5,6 +5,8 @@ const poky = require('poky')
 const createRichEmbed = require(path.join(__dirname, 'lib', 'createRichEmbed.js'))
 const memberData = require(path.join(__dirname, 'lib', 'memberData.js'))
 
+const config = JSON.parse(ofs.readFileSync(path.join(__dirname, 'config.json')))
+
 const client = new Discord.Client()
 
 let recentDabs = []
@@ -65,6 +67,23 @@ client.on('message', async (message) => {
 
 				await message.channel.send(createRichEmbed('-=-=- Dab Leaderboards -=-=-', boardContent))
 				break
+			case 'eval':
+				if (message.member.id === '249963809119272960') {
+					let evalCode = message.content.substring(command.length + 2)
+					console.log('Eval: ' + evalCode)
+
+					let evalRes
+
+					try {
+						evalRes = eval(evalCode)
+					}
+					catch (err) {
+						evalRes = err
+					}
+
+					await message.channel.send(createRichEmbed('Eval Result', '```\n' + evalRes + '\n```'))
+				}
+				break
 		}
 	}
 })
@@ -80,10 +99,12 @@ client.on('message', async (message) => {
 	const serverDabEmoji = message.guild.emojis.array().filter((emoji) => emoji.name.toLowerCase().includes('dab'))
 
 	let dabbed = false
+	let dabCount = 0
 
 	for (let i = 0; i < serverDabEmoji.length; i++) {
 		if (message.content.includes(serverDabEmoji[i].toString())) {
 			dabbed = true
+			dabCount++
 		}
 	}
 
@@ -106,16 +127,25 @@ client.on('message', async (message) => {
 
 		recentDabs.push(message.member)
 
-		let sentM = await message.channel.send(createRichEmbed('Savage Dab', 'Congratulations, you\'ve just dabbed!'))
+		let sendContent = config.dabMessages.find((message) => message.count === dabCount)
+
+		if (!sendContent) sendContent = {
+			'title': dabCount + '-' + 'dab',
+			'description': 'You\'re quite the dab legend. You\'ve performed a ' + dabCount + '-dab.'
+		}
+
+		console.log(sendContent.title + ' by ' + message.author.username + '#' + message.author.discriminator)
+
+		const sentM = await message.channel.send(createRichEmbed(sendContent.title, sendContent.description))
 
 		senderData.dabs++
 
 		await memberData.setMember(message.member.id, senderData)
 
-		await poky(2000)
+		await poky(3000)
 
 		await sentM.delete()
 	}
 })
 
-client.login(JSON.parse(ofs.readFileSync(path.join(__dirname, 'config.json'))).token)
+client.login(config.token)
