@@ -13,7 +13,7 @@
 
 ### `!leaderboards`
 
-Shows the DabBot leaderboards! (The Dabbing legends)
+Shows the DabBot leaderboards! (The dabbing legends)
 
 ### `!dabs`
 
@@ -23,6 +23,6 @@ Tells how many times you've dabbed.
 
 ### `!about`
 
-Gives information about DabBot
+Gives information about DabBot.
 
 ![DabBot congratulates a dabber](https://github.com/ethanent/DabBot/blob/master/media/img2.png?raw=true)

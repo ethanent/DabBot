@@ -11,7 +11,7 @@ let recentDabs = []
 
 setInterval(() => {
 	recentDabs = []
-}, 3 * 60 * 1000)
+}, 2 * 60 * 1000)
 
 client.on('ready', async () => {
 	await client.user.setPresence({
@@ -74,8 +74,6 @@ client.on('message', async (message) => {
 	if (message.author.bot) return
 	if (!message.member) return
 
-	if (recentDabs.includes(message.member)) return
-
 	const senderData = await memberData.getMember(message.member.id)
 
 	const serverDabEmoji = message.guild.emojis.array().filter((emoji) => emoji.name.toLowerCase().includes('dab'))
@@ -91,6 +89,16 @@ client.on('message', async (message) => {
 	if (dabbed) {
 		if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
 			await message.channel.send(createRichEmbed('Dab Error', 'I need the **Administrator** permission to qualify dabs!', null, true))
+
+			return
+		}
+
+		if (recentDabs.includes(message.member)) {
+			let sentWM = await message.channel.send(createRichEmbed('Dab Dab too fast?', 'Your Dab Score didn\'t increase because you\'re dabbing too much now.\n*hold off for like 2 minutes*', null, true))
+
+			await poky(3000)
+
+			await sentWM.delete()
 
 			return
 		}
