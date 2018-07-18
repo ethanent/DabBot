@@ -2,6 +2,7 @@ const path = require('path')
 const ofs = require('fs')
 const Discord = require('discord.js')
 const poky = require('poky')
+const countStringInstances = require(path.join(__dirname, 'lib', 'countStringInstances.js'))
 const createRichEmbed = require(path.join(__dirname, 'lib', 'createRichEmbed.js'))
 const memberData = require(path.join(__dirname, 'lib', 'memberData.js'))
 
@@ -13,7 +14,7 @@ let recentDabs = []
 
 setInterval(() => {
 	recentDabs = []
-}, 2 * 60 * 1000)
+}, 1 * 60 * 1000)
 
 client.on('ready', async () => {
 	await client.user.setPresence({
@@ -98,17 +99,15 @@ client.on('message', async (message) => {
 
 	const serverDabEmoji = message.guild.emojis.array().filter((emoji) => emoji.name.toLowerCase().includes('dab'))
 
-	let dabbed = false
 	let dabCount = 0
 
 	for (let i = 0; i < serverDabEmoji.length; i++) {
-		if (message.content.includes(serverDabEmoji[i].toString())) {
-			dabbed = true
-			dabCount++
-		}
+		dabCount += countStringInstances(message.content, serverDabEmoji[i].toString())
 	}
 
-	if (dabbed) {
+	console.log('Dabs: ' + dabCount)
+
+	if (dabCount > 0) {
 		if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
 			await message.channel.send(createRichEmbed('Dab Error', 'I need the **Administrator** permission to qualify dabs!', null, true))
 
