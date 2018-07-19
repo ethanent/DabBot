@@ -14,7 +14,7 @@ let recentDabs = []
 
 setInterval(() => {
 	recentDabs = []
-}, 1 * 60 * 1000)
+}, 10 * 1000)
 
 client.on('ready', async () => {
 	await client.user.setPresence({
@@ -104,8 +104,6 @@ client.on('message', async (message) => {
 	for (let i = 0; i < serverDabEmoji.length; i++) {
 		dabCount += countStringInstances(message.content, serverDabEmoji[i].toString())
 	}
-
-	console.log('Dabs: ' + dabCount)
 
 	if (dabCount > 0) {
 		if (!message.guild.me.hasPermission('ADMINISTRATOR')) {
